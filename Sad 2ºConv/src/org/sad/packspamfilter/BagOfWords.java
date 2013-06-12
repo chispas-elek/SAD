@@ -67,5 +67,24 @@ public class BagOfWords {
 		//Falta la parte de escritura del fichero
 	}
 	
+	
 	//Faltaría hacer el método para TF-IDF
+	public Instances matrizDispersionTFIDF() {
+		Instances dataBOW = null;
+		this.getStw().setIDFTransform(true);
+		this.getStw().setTFTransform(true);
+		this.getStw().setAttributeIndices("last");
+		this.getStw().setLowerCaseTokens(true);
+		this.getStw().setOutputWordCounts(true);
+		this.getStw().setWordsToKeep(2000);
+		
+		try{
+			this.getStw().setInputFormat(data);
+			dataBOW = Filter.useFilter(data, this.getStw());
+		}catch (Exception e) {
+			System.out.println("Ha ocurrido un error durante el filtrado, es posible que el fichero de datos no sea correcto o que los parámetros del filtro no sean correctos");
+		}
+		return dataBOW;
+		
+	}
 }

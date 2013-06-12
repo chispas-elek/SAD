@@ -18,15 +18,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
-import weka.attributeSelection.BestFirst;
-import weka.attributeSelection.CfsSubsetEval;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.lazy.IB1;
-import weka.core.Capabilities;
 import weka.core.Instances;
-import weka.filters.Filter;
-import weka.filters.supervised.attribute.AttributeSelection;
 
 
 public class DataMiningExample {
@@ -74,11 +68,17 @@ public class DataMiningExample {
 		NaiveBayes estimador= new NaiveBayes();//Naive Bayes
 		// Instead, train the classifier (estimador) by means of:		the IB1 algorithm (in this case) 
 		//IB1 estimador= new IB1();//k-Nearest Neighbour (with k=1)
+		try {
+			estimador.buildClassifier(dataInfoGain);
+		}
+		catch(Exception e) {
+			System.out.println("No se ha podido crear el estimador");
+		}
 
 		// 3.1 Assess the performance of the classifier by means of 10-fold cross-validation 
 		//  HACER!!!! Empaquetar Bloque 3.1: como sub-clase						
-		Evaluation evaluator = new Evaluation(newData);
-		evaluator.crossValidateModel(estimador, newData, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
+		Evaluation evaluator = new Evaluation(dataInfoGain);
+		evaluator.crossValidateModel(estimador, dataInfoGain, 10, new Random(3)); // Random(1): the seed=1 means "no shuffle" :-!
 		double acc=evaluator.pctCorrect();
 		double inc=evaluator.pctIncorrect();
 		double kappa=evaluator.kappa();
