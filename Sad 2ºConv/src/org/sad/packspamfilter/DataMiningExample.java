@@ -64,8 +64,8 @@ public class DataMiningExample {
         
         //Algoritmo basado en ganancia de datos
         
-        
-		
+        FeatureSubSetSelection fss = new FeatureSubSetSelection(dataBOW);
+		Instances dataInfoGain = fss.seleccionarAtributos();
 		
 
 		/////////////////////////////////////////////////////////////

@@ -4,6 +4,7 @@ import weka.core.Instances;
 import weka.filters.Filter;
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
+import weka.filters.supervised.attribute.AttributeSelection;
 
 
 public class FeatureSubSetSelection {
@@ -16,26 +17,23 @@ public class FeatureSubSetSelection {
 		this.data = pData;
 	}
 	
-	public Instances seleccioanrAtributos() {
+	//Metodos
+	public Instances seleccionarAtributos() {
 		Instances dataInfoGain = null;
 		
-		
-		/////////////////////////////////////////////////////////////		
-		// 2. FEATURE SUBSET SELECTION
-		//  HACER!!!! Empaquetar Bloque 2: como sub-clase		
-		/*AttributeSelection filter= new AttributeSelection();
-		CfsSubsetEval eval = new CfsSubsetEval();
-		BestFirst search=new BestFirst();
+		AttributeSelection filter= new AttributeSelection();
+		InfoGainAttributeEval eval = new InfoGainAttributeEval();
+		Ranker search = new Ranker();
+		search.setThreshold(0.0005);
 		filter.setEvaluator(eval);
 		filter.setSearch(search);
-		filter.setInputFormat(data);
-		// 2.1 Get new data set with the attribute sub-set
-		Instances newData = Filter.useFilter(data, filter);*/
+		try{
+			filter.setInputFormat(this.data);
+			dataInfoGain = Filter.useFilter(data, filter);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		InfoGainAttributeEval igae = new InfoGainAttributeEval();
-		Ranker rank = new Ranker();
-		rank.setThreshold(0.0005);
-		
-		
+		return dataInfoGain;
 	}
 }
