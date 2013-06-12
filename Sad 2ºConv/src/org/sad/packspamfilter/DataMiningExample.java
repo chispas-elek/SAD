@@ -44,44 +44,27 @@ public class DataMiningExample {
 			return; 
 		}
 		 */		
-        // 1.2. Open the file
-	    FileReader fi=null;
-		try {
-			fi= new FileReader("~/software/weka-3-6-9/data/breast-cancer.arff"); //(args[0]) <-> ("~/software/weka-3-6-9/data/breast-cancer.arff" )
-		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: Revisar path del fichero de datos:"+args[0]);
-		}
-		// 1.3. Load the instances
-		Instances data=null;
-		try {
-			data = new Instances(fi);
-		} catch (IOException e) {
-			System.out.println("ERROR: Revisar contenido del fichero de datos: "+args[0]);
-		}
-		// 1.4. Close the file
-		try {
-			fi.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-		}
-		// 1.5. Shuffle the instances: apply Randomize filter
-		//  HACER!!!!
-
-		// 1.6. Specify which attribute will be used as the class: the last one, in this case 
-		data.setClassIndex(data.numAttributes()-1);
-		
-		
-		/////////////////////////////////////////////////////////////		
-		// 2. FEATURE SUBSET SELECTION
-		//  HACER!!!! Empaquetar Bloque 2: como sub-clase		
-		AttributeSelection filter= new AttributeSelection();
-		CfsSubsetEval eval = new CfsSubsetEval();
-		BestFirst search=new BestFirst();
-		filter.setEvaluator(eval);
-		filter.setSearch(search);
-		filter.setInputFormat(data);
-		// 2.1 Get new data set with the attribute sub-set
-		Instances newData = Filter.useFilter(data, filter);
+    	
+    	/////////////////////////////////////////////////////////////////////////
+    	//Abrimos el fichero y cargamos los datos
+        LoadData datos = new LoadData(args[0]);
+        Instances data = datos.cargarDatos();
+     
+        ////////////////////////////////////////////////////////////////////////
+        //Bag of Words
+        //En éste apartado vamos a crear la matriz dispersa para indicar la presencia de las palabras.
+        
+        BagOfWords bow = new BagOfWords(data);
+        //Por el momento será con el output en false
+        Instances dataBOW = bow.matrizDispersionOWCFalse();
+        
+        ////////////////////////////////////////////////////////////////////////
+        //FeatureSubSetSelection
+        //Ahora vamos a elegir los datos más relevantes mediante dos tipos de algoritmos. Uno de ganancia de datos y otra basado en técnicas TF-IDF
+        
+        //Algoritmo basado en ganancia de datos
+        
+        
 		
 		
 
