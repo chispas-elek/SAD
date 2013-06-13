@@ -51,17 +51,23 @@ public class DataMiningExample {
         BagOfWords bow = new BagOfWords(data);
         //Por el momento será con el output en false
         Instances dataBOW = bow.matrizDispersionOWCFalse();
-        
+        Instances dataBOWTF = bow.matrizDispersionTFIDF();
         ////////////////////////////////////////////////////////////////////////
         //FeatureSubSetSelection
         //Ahora vamos a elegir los datos más relevantes mediante dos tipos de algoritmos. Uno de ganancia de datos y otra basado en técnicas TF-IDF
         
         //Algoritmo basado en ganancia de datos
         
-        FeatureSubSetSelection fss = new FeatureSubSetSelection(dataBOW);
-		Instances dataInfoGain = fss.seleccionarAtributos();
+        FeatureSubSetSelection fss = new FeatureSubSetSelection();
+		Instances dataInfoGain = fss.seleccionarAtributos(dataBOW);
 		
+		//Algoritmo basado en TF-IDF
+		
+		Instances dataTFIDF = fss.seleccionarAtributos(dataBOWTF);
 
+		
+		
+		
 		/////////////////////////////////////////////////////////////
 		// 3. CLASSIFY: 
 		// 3.0 Train the classifier (estimador) by means of:	the Naive Bayes algorithm (in this case)

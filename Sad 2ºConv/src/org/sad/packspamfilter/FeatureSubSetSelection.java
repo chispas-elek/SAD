@@ -9,16 +9,14 @@ import weka.filters.supervised.attribute.AttributeSelection;
 
 public class FeatureSubSetSelection {
 	
-	//Atributos
-	private Instances data;
 	
 	//Constructora
-	public FeatureSubSetSelection(Instances pData)  {
-		this.data = pData;
+	public FeatureSubSetSelection()  {
+		
 	}
 	
 	//Metodos
-	public Instances seleccionarAtributos() {
+	public Instances seleccionarAtributos(Instances pData) {
 		Instances dataInfoGain = null;
 		
 		AttributeSelection filter= new AttributeSelection();
@@ -28,8 +26,8 @@ public class FeatureSubSetSelection {
 		filter.setEvaluator(eval);
 		filter.setSearch(search);
 		try{
-			filter.setInputFormat(this.data);
-			dataInfoGain = Filter.useFilter(data, filter);
+			filter.setInputFormat(pData);
+			dataInfoGain = Filter.useFilter(pData, filter);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

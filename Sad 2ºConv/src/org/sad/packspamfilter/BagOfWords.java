@@ -36,8 +36,8 @@ public class BagOfWords {
 		
 		
 		try{
-			this.getStw().setInputFormat(data);
-			dataBOW = Filter.useFilter(data, this.getStw());
+			this.getStw().setInputFormat(this.getData());
+			dataBOW = Filter.useFilter(this.getData(), this.getStw());
 		}catch (Exception e) {
 			System.out.println("Ha ocurrido un error durante el filtrado, es posible que el fichero de datos no sea correcto o que los parámetros del filtro no sean correctos");
 		}
@@ -57,8 +57,8 @@ public class BagOfWords {
 		
 		
 		try{
-			this.getStw().setInputFormat(data);
-			dataBOW = Filter.useFilter(data, this.getStw());
+			this.getStw().setInputFormat(this.getData());
+			dataBOW = Filter.useFilter(this.getData(), this.getStw());
 		}catch (Exception e) {
 			System.out.println("Ha ocurrido un error durante el filtrado, es posible que el fichero de datos no sea correcto o que los parámetros del filtro no sean correctos");
 		}
@@ -70,7 +70,7 @@ public class BagOfWords {
 	
 	//Faltaría hacer el método para TF-IDF
 	public Instances matrizDispersionTFIDF() {
-		Instances dataBOW = null;
+		Instances dataBOWTF = null;
 		this.getStw().setIDFTransform(true);
 		this.getStw().setTFTransform(true);
 		this.getStw().setAttributeIndices("last");
@@ -80,11 +80,11 @@ public class BagOfWords {
 		
 		try{
 			this.getStw().setInputFormat(data);
-			dataBOW = Filter.useFilter(data, this.getStw());
+			dataBOWTF = Filter.useFilter(data, this.getStw());
 		}catch (Exception e) {
 			System.out.println("Ha ocurrido un error durante el filtrado, es posible que el fichero de datos no sea correcto o que los parámetros del filtro no sean correctos");
 		}
-		return dataBOW;
-		
+		return dataBOWTF;
+		//Falta la parte de escritura del fichero
 	}
 }
