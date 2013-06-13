@@ -15,4 +15,8 @@ public class Naive {
 			System.out.println("No se ha podido crear el estimador");
 		}
 	}
+	
+	public NaiveBayes getEstimador() {
+		return this.estimador;
+	}
 }

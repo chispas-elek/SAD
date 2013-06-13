@@ -39,26 +39,33 @@ public class DataMiningExample {
 		}
 		 */		
     	
-    	/////////////////////////////////////////////////////////////////////////
+    	/////////////////////////////////////////
     	//Abrimos el fichero y cargamos los datos
         LoadData datos = new LoadData(args[0]);
         Instances data = datos.cargarDatos();
      
-        ////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////
         //Bag of Words
-        //En éste apartado vamos a crear la matriz dispersa para indicar la presencia de las palabras.
+        //En éste apartado vamos a crear la matriz 
+        //dispersa para indicar la presencia de las palabras.
         
         BagOfWords bow = new BagOfWords(data);
+        
         //Por el momento será con el output en false
+       
         Instances dataBOW = bow.matrizDispersionOWCFalse();
         Instances dataBOWTF = bow.matrizDispersionTFIDF();
-        ////////////////////////////////////////////////////////////////////////
+        
+        //////////////////////////////////////////
         //FeatureSubSetSelection
-        //Ahora vamos a elegir los datos más relevantes mediante dos tipos de algoritmos. Uno de ganancia de datos y otra basado en técnicas TF-IDF
+        
+        FeatureSubSetSelection fss = new FeatureSubSetSelection();
+        
+        //Ahora vamos a elegir los datos más relevantes mediante dos tipos de algoritmos. 
+        //Uno de ganancia de datos y otra basado en técnicas TF-IDF
         
         //Algoritmo basado en ganancia de datos
         
-        FeatureSubSetSelection fss = new FeatureSubSetSelection();
 		Instances dataInfoGain = fss.seleccionarAtributos(dataBOW);
 		
 		//Algoritmo basado en TF-IDF
@@ -71,36 +78,21 @@ public class DataMiningExample {
 		Instances train = new SeleccionDatos().train();
 		Instances test = new SeleccionDatos().test();
 		
-		/////////////////////////////////////////////////////////////
+		/////////////////////////////////////////
 		// 3. CLASSIFY: 
-		// 3.0 Train the classifier (estimador) by means of:	the Naive Bayes algorithm (in this case)
-		//Naive Bayes
+		// 3.0 Train the classifier (estimador) by means of:
+		//the Naive Bayes algorithm (in this case)
+		//and J48
+		
 		Naive naiveIG = new Naive(train);
+		/*TODO hacer el J48*/
+		J48Tree jTree = null;
 		
-		// Instead, train the classifier (estimador) by means of:		the IB1 algorithm (in this case) 
-		//IB1 estimador= new IB1();//k-Nearest Neighbour (with k=1)
-		
-
 		// 3.1 Assess the performance of the classifier by means of 10-fold cross-validation 
 		//  HACER!!!! Empaquetar Bloque 3.1: como sub-clase						
-		Evaluation evaluator = new Evaluation(dataInfoGain);
-		evaluator.crossValidateModel(estimador, dataInfoGain, 10, new Random(3)); // Random(1): the seed=1 means "no shuffle" :-!
-		double acc=evaluator.pctCorrect();
-		double inc=evaluator.pctIncorrect();
-		double kappa=evaluator.kappa();
-		double mae=evaluator.meanAbsoluteError();    
-		double rmse=evaluator.rootMeanSquaredError();
-		double rae=evaluator.relativeAbsoluteError();
-		double rrse=evaluator.rootRelativeSquaredError();
-		double confMatrix[][]= evaluator.confusionMatrix();
 		
-		System.out.println("Correctly Classified Instances  " + acc);
-		System.out.println("Incorrectly Classified Instances  " + inc);
-		System.out.println("Kappa statistic  " + kappa);
-		System.out.println("Mean absolute error  " + mae);
-		System.out.println("Root mean squared error  " + rmse);
-		System.out.println("Relative absolute error  " + rae);
-		System.out.println("Root relative squared error  " + rrse);	
+		AssessPerformance assessN = new AssessPerformance(train, naiveIG.getEstimador());
+		AssessPerformance assessJ = new AssessPerformance(train, null);
 		
 		/*
 		 // 3.2 Alternatively, assess the classifier leaving the 30% of the data randomly selected out to test the model 
