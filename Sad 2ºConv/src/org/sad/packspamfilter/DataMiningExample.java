@@ -66,20 +66,20 @@ public class DataMiningExample {
 		Instances dataTFIDF = fss.seleccionarAtributos(dataBOWTF);
 
 		
+		//Particion train y test
 		
+		Instances train = new SeleccionDatos().train();
+		Instances test = new SeleccionDatos().test();
 		
 		/////////////////////////////////////////////////////////////
 		// 3. CLASSIFY: 
 		// 3.0 Train the classifier (estimador) by means of:	the Naive Bayes algorithm (in this case)
-		NaiveBayes estimador= new NaiveBayes();//Naive Bayes
+		//Naive Bayes
+		Naive naiveIG = new Naive(train);
+		
 		// Instead, train the classifier (estimador) by means of:		the IB1 algorithm (in this case) 
 		//IB1 estimador= new IB1();//k-Nearest Neighbour (with k=1)
-		try {
-			estimador.buildClassifier(dataInfoGain);
-		}
-		catch(Exception e) {
-			System.out.println("No se ha podido crear el estimador");
-		}
+		
 
 		// 3.1 Assess the performance of the classifier by means of 10-fold cross-validation 
 		//  HACER!!!! Empaquetar Bloque 3.1: como sub-clase						

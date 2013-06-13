@@ -26,7 +26,6 @@ public class SaveData {
 			try {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(pNombreFichero));
 				
-				
 			}catch (IOException e) {
 				e.printStackTrace();
 			}
