@@ -23,11 +23,12 @@ public class FeatureSubSetSelection {
 		InfoGainAttributeEval eval = new InfoGainAttributeEval();
 		Ranker search = new Ranker();
 		search.setThreshold(0.0005);
+		search.setNumToSelect(-1);
 		filter.setEvaluator(eval);
 		filter.setSearch(search);
 		try{
 			filter.setInputFormat(pData);
-			dataInfoGain = Filter.useFilter(pData, filter);
+			dataInfoGain = new Instances(Filter.useFilter(pData, filter));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
