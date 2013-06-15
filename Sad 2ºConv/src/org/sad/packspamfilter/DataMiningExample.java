@@ -73,10 +73,17 @@ public class DataMiningExample {
 		Instances dataTFIDF = fss.seleccionarAtributos(dataBOWTF);
 
 		
-		//Particion train y test
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//Partición del train y test.
 		
-		Instances train = new SeleccionDatos().train();
-		Instances test = new SeleccionDatos().test();
+		//Partición train y test para InfoGain
+		
+		SeleccionDatos selecDatos = new SeleccionDatos();
+		selecDatos.seleccionar(dataInfoGain);
+		Instances train = selecDatos.getTrain();
+		Instances test = selecDatos.getTest();
+		
+		//Partición train y test para TF-IDF
 		
 		/////////////////////////////////////////
 		// 3. CLASSIFY: 
@@ -84,15 +91,10 @@ public class DataMiningExample {
 		//the Naive Bayes algorithm (in this case)
 		//and J48
 		
-		Naive naiveIG = new Naive(train);
+		Naive naiveIG = new Naive();
+		naiveIG.Naive(train, test);
 		/*TODO hacer el J48*/
 		J48Tree jTree = null;
-		
-		// 3.1 Assess the performance of the classifier by means of 10-fold cross-validation 
-		//  HACER!!!! Empaquetar Bloque 3.1: como sub-clase						
-		
-		AssessPerformance assessN = new AssessPerformance(train, naiveIG.getEstimador());
-		AssessPerformance assessJ = new AssessPerformance(train, null);
 		
 		/*
 		 // 3.2 Alternatively, assess the classifier leaving the 30% of the data randomly selected out to test the model 
@@ -100,7 +102,7 @@ public class DataMiningExample {
 		int trainSize = (int) Math.round(newData.numInstances() * 0.7);
 		int testSize = newData.numInstances() - trainSize;
 		// HACER!!!! Salvar las instancias del test en un fichero
-		Instances train = new Instances(newData, 0, trainSize);
+		Instances train = new Instances(newDaAssessPerformance assessN = new AssessPerformance(train, naiveIG);ta, 0, trainSize);
 		Instances test = new Instances(newData, trainSize, testSize);
 		
 		// 3.2.b Train the classifier with the 70\% of the data by means of the Naive Bayes algorithm

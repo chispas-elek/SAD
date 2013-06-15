@@ -4,27 +4,42 @@ import weka.core.Instances;
 
 public class SeleccionDatos {
 	
+	//atributos
 	private Instances test, train;
 	
+	//Constructora
 	public SeleccionDatos() {
-		
+		this.test = null;
+		this.train = null;
 	}
 	
+	
+	//metodos
 	public void seleccionar(Instances pData) {
 		int trainSize = (int) Math.round(pData.numInstances() * 0.66);
 		int testSize = pData.numInstances() - trainSize;
-		train = new Instances(pData, 0, trainSize);
-		test = new Instances(pData, trainSize, testSize);
+		this.setTrain(new Instances(pData, 0, trainSize));
+		this.setTest(new Instances(pData, trainSize, testSize));
 		
 		// HACER!!!! Salvar las instancias del test en un fichero
 	}
 	
-	public Instances train() {
+	private void setTrain(Instances pDatos) {
+		this.train = pDatos;
+	}
+	
+	private void setTest(Instances pDatos) {
+		this.test = pDatos;
+	}
+	
+	public Instances getTrain() {
 		return this.train;
 	}
 	
-	public Instances test() {
+	public Instances getTest() {
 		return this.test;
 	}
 
+	
+	
 }

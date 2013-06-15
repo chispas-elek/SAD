@@ -18,7 +18,7 @@ public class FeatureSubSetSelection {
 	//Metodos
 	public Instances seleccionarAtributos(Instances pData) {
 		Instances dataInfoGain = null;
-		
+		pData.setClassIndex(0);
 		AttributeSelection filter= new AttributeSelection();
 		InfoGainAttributeEval eval = new InfoGainAttributeEval();
 		Ranker search = new Ranker();
