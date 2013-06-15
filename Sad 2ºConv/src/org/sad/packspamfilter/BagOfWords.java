@@ -41,9 +41,8 @@ public class BagOfWords {
 		}catch (Exception e) {
 			System.out.println("Ha ocurrido un error durante el filtrado, es posible que el fichero de datos no sea correcto o que los parámetros del filtro no sean correctos");
 		}
+		SaveData.guardarResultado("testBOW.arff", dataBOW);
 		return dataBOW;
-		
-		//Falta la parte de escritura del fichero
 	}
 	
 	public Instances matrizDispersionOWCTrue() {
@@ -84,6 +83,7 @@ public class BagOfWords {
 		}catch (Exception e) {
 			System.out.println("Ha ocurrido un error durante el filtrado, es posible que el fichero de datos no sea correcto o que los parámetros del filtro no sean correctos");
 		}
+		SaveData.guardarResultado("testBOWTFIDF.arff", dataBOWTF);
 		return dataBOWTF;
 		//Falta la parte de escritura del fichero
 	}

@@ -19,13 +19,30 @@ public class SaveData {
 	}
 	
 	//Metodos
-	public void guardarResultado(String pNombreFichero, Instances pData) {
+	public static void guardarResultado(String pNombreFichero, Instances pData) {
 		File fichero = new File(pNombreFichero);
 		if(!fichero.exists()) {
 			//No existe duplicado
 			try {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(pNombreFichero));
+				//Escribimos el relation
+				bw.write("@relation "+pData.relationName());
+				bw.newLine();
+				//Aquí imprimimos cada atributo
+				for(int k=0;k<pData.numAttributes();k++) {
+					bw.newLine();
+					bw.write(""+pData.attribute(k));
+				}
 				
+				//Aquí escribiremos las instancias de la clase
+				bw.newLine();
+				bw.newLine();
+				bw.write("@data");
+				for(int i=0;i<pData.numInstances();i++) {
+					bw.newLine();
+					bw.write(""+pData.instance(i));
+				}
+				bw.close();
 			}catch (IOException e) {
 				e.printStackTrace();
 			}
