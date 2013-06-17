@@ -92,7 +92,7 @@ public class DataMiningExample {
 		//and J48
 		
 		Naive naiveIG = new Naive();
-		naiveIG.Naive(train, test);
+		naiveIG.estimarNaive(train, test);
 		/*TODO hacer el J48*/
 		J48Tree jTree = null;
 		

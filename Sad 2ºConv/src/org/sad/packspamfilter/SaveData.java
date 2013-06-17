@@ -50,4 +50,24 @@ public class SaveData {
 			System.out.println("El fichero "+pNombreFichero+" existe en el directorio de datos, por favor eliminalo");
 		}
 	}
+	
+	//Con el siguiente método se intenta escribir los resultados obtenidos
+	
+	public void escribirResultadosEvaluador(double[] pPrediction){
+		File fichero = new File("Resultado.txt");
+		if(!fichero.exists()) {
+			//No existen duplicados
+			try{
+				BufferedWriter bw = new BufferedWriter(new FileWriter("Resultado.txt"));
+				for(int i=0;i<pPrediction.length;i++){
+					//Hay que revisar bien como era la escritura del archivo, puede que me falten parámetros de entrada
+				}
+				bw.close();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else {
+			System.out.println("El fichero de Resultados ya existe. Por favor elimina primero dicho fichero");
+		}
+	}
 }

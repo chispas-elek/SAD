@@ -12,7 +12,7 @@ public class Naive {
 	public Naive() {
 		
 	}
-	public void Naive(Instances pTrain, Instances pTest) {
+	public void estimarNaive(Instances pTrain, Instances pTest) {
 			NaiveBayes estimador = new NaiveBayes();
 			try {
 				double max=0;
