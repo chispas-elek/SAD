@@ -56,44 +56,41 @@ public class Naive {
 				
 				//Una vez imprimido el fmeasure máximo vamos a entrenar el modelo y guardar los resultados
 				
-				try{
-					estimador.buildClassifier(pTrain);
-					//Aleatorizamos el fichero de test
-					Random rnd = new Random();
-					int num = rnd.nextInt(50)+1;
-					pTest.randomize(new Random(num));
+				estimador.buildClassifier(pTrain);
+				//Aleatorizamos el fichero de test
+				Random rnd = new Random();
+				int num = rnd.nextInt(50)+1;
+				pTest.randomize(new Random(num));
 					
-					evaluator.evaluateModel(estimador, pTest);
+				evaluator.evaluateModel(estimador, pTest);
 					
-					double predictions[] = new double[pTest.numInstances()];
-					for (int i = 0; i < pTest.numInstances(); i++) {
-						predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction((Classifier)estimador, pTest.instance(i)); //Cast Clasifier a estimador
-					}
-					
-					//Resultado
-					
-					acc=evaluator.pctCorrect();
-					double inc=evaluator.pctIncorrect();
-					double kappa=evaluator.kappa();
-					double mae=evaluator.meanAbsoluteError();    
-					double rmse=evaluator.rootMeanSquaredError();
-					double rae=evaluator.relativeAbsoluteError();
-					double rrse=evaluator.rootRelativeSquaredError();
-		
-					System.out.println("Correctly Classified Instances  " + acc);
-					System.out.println("Incorrectly Classified Instances  " + inc);
-					System.out.println("Kappa statistic  " + kappa);
-					System.out.println("Mean absolute error  " + mae);
-					System.out.println("Root mean squared error  " + rmse);
-					System.out.println("Relative absolute error  " + rae);
-					System.out.println("Root relative squared error  " + rrse);
-					
-					
-					
-					//Escribiremos en un fichero el resultado final de la matriz de predictions.
-				}catch (Exception e) {
-					e.printStackTrace();
+				double predictions[] = new double[pTest.numInstances()];
+				for (int i = 0; i < pTest.numInstances(); i++) {
+					predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction((Classifier)estimador, pTest.instance(i)); //Cast Clasifier a estimador
 				}
+					
+				//Resultado
+					
+				acc=evaluator.pctCorrect();
+				double inc=evaluator.pctIncorrect();
+				double kappa=evaluator.kappa();
+				double mae=evaluator.meanAbsoluteError();    
+				double rmse=evaluator.rootMeanSquaredError();
+				double rae=evaluator.relativeAbsoluteError();
+				double rrse=evaluator.rootRelativeSquaredError();
+		
+				System.out.println("Correctly Classified Instances  " + acc);
+				System.out.println("Incorrectly Classified Instances  " + inc);
+				System.out.println("Kappa statistic  " + kappa);
+				System.out.println("Mean absolute error  " + mae);
+				System.out.println("Root mean squared error  " + rmse);
+				System.out.println("Relative absolute error  " + rae);
+				System.out.println("Root relative squared error  " + rrse);
+					
+					
+					
+				//Escribiremos en un fichero el resultado final de la matriz de predictions.
+				SaveData.escribirResultadosEvaluador("ResultadoNaive.txt", pTest, predictions);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

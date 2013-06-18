@@ -16,7 +16,7 @@ public class FeatureSubSetSelection {
 	}
 	
 	//Metodos
-	public Instances seleccionarAtributos(Instances pData) {
+	public Instances seleccionarAtributos(String pNombreFichero,Instances pData) {
 		Instances dataInfoGain = null;
 		pData.setClassIndex(0);
 		AttributeSelection filter= new AttributeSelection();
@@ -32,7 +32,8 @@ public class FeatureSubSetSelection {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		//Guardo los ficheros resultantes
+		SaveData.guardarResultado(pNombreFichero, dataInfoGain);
 		return dataInfoGain;
 	}
 }

@@ -14,31 +14,13 @@
  */
 package org.sad.packspamfilter;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Random;
-import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Instances;
 
 
 public class DataMiningExample {
 	
     public static void main(String[] args) throws Exception {
-		/////////////////////////////////////////////////////////////
-		// 1. LOAD DATA FILE
-		//  HACER!!!! Bloque 1: como sub-clase
-        // 1.1. Get the path of the .arff (instances) from the command line
-        /*
-		 if( args.length < 1 ){
-			System.out.println("OBJETIVO: Seleccionar atributos (AttributeSelection<-CfsSubsetEval, search<-BestFirst) y Evaluar clasificador NaiveBayes con 10-fold cross-validation.");
-			System.out.println("ARGUMENTOS:");
-			System.out.println("\t1. Path del fichero de entrada: datos en formato .arff");
-			return; 
-		}
-		 */		
-    	
+		
     	/////////////////////////////////////////
     	//Abrimos el fichero y cargamos los datos
         LoadData datos = new LoadData(args[0]);
@@ -66,11 +48,11 @@ public class DataMiningExample {
         
         //Algoritmo basado en ganancia de datos
         
-		Instances dataInfoGain = fss.seleccionarAtributos(dataBOW);
+		Instances dataInfoGain = fss.seleccionarAtributos("testDataInfogain.arff",dataBOW);
 		
 		//Algoritmo basado en TF-IDF
 		
-		Instances dataTFIDF = fss.seleccionarAtributos(dataBOWTF);
+		Instances dataTFIDF = fss.seleccionarAtributos("testDataTFIDF.arff",dataBOWTF);
 
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,46 +61,27 @@ public class DataMiningExample {
 		//Partición train y test para InfoGain
 		
 		SeleccionDatos selecDatos = new SeleccionDatos();
-		selecDatos.seleccionar(dataInfoGain);
+		selecDatos.seleccionar("smsInfoGainTrain.arff","smsInfoGainTest.arff",dataInfoGain);
 		Instances train = selecDatos.getTrain();
 		Instances test = selecDatos.getTest();
 		
 		//Partición train y test para TF-IDF
 		
+		SeleccionDatos selecDatosTFIDF = new SeleccionDatos();
+		selecDatosTFIDF.seleccionar("smsTFIDFTrain.arff","smsTFIDFTest.arff",dataTFIDF);
+		Instances trainTFIDF = selecDatosTFIDF.getTrain();
+		Instances testTFIDF = selecDatosTFIDF.getTest();
+		
 		/////////////////////////////////////////
 		// 3. CLASSIFY: 
-		// 3.0 Train the classifier (estimador) by means of:
-		//the Naive Bayes algorithm (in this case)
-		//and J48
 		
+		//Estimador usándo NaiveBayes
 		Naive naiveIG = new Naive();
 		naiveIG.estimarNaive(train, test);
-		/*TODO hacer el J48*/
-		J48Tree jTree = null;
-		
-		/*
-		 // 3.2 Alternatively, assess the classifier leaving the 30% of the data randomly selected out to test the model 
-		// 3.2.a Get the test set by randomly selecting the the 30% of the instances
-		int trainSize = (int) Math.round(newData.numInstances() * 0.7);
-		int testSize = newData.numInstances() - trainSize;
-		// HACER!!!! Salvar las instancias del test en un fichero
-		Instances train = new Instances(newDaAssessPerformance assessN = new AssessPerformance(train, naiveIG);ta, 0, trainSize);
-		Instances test = new Instances(newData, trainSize, testSize);
-		
-		// 3.2.b Train the classifier with the 70\% of the data by means of the Naive Bayes algorithm
-		estimador.buildClassifier(train);
-		
-		// 3.2.c Let the model predict the class for each instance in the test set
-		evaluator.evaluateModel(estimador, test);
-		double predictions[] = new double[test.numInstances()];
-		for (int i = 0; i < test.numInstances(); i++) {
-			predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction((Classifier)estimador, test.instance(i));
-		}
-		// HACER!!!! Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
-		
-		// 3.2.d Assess the performance on the test
-		//  HACER!!!! Idéntico idéntico idéntico al 3.1: por eso es necesario que sea modular, no vamos a copiar aquí el código de nuevo!
-		*/
-		
+		naiveIG.estimarNaive(trainTFIDF, testTFIDF);
+		//Estimador usándo árbol de decisión J48
+		J48Tree jTree = new J48Tree();
+		jTree.estimarJ48(train, test);
+		jTree.estimarJ48(trainTFIDF, testTFIDF);
     }
 }

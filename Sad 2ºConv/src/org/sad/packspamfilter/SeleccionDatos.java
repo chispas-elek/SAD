@@ -15,13 +15,15 @@ public class SeleccionDatos {
 	
 	
 	//metodos
-	public void seleccionar(Instances pData) {
+	public void seleccionar(String pNombreFicheroTest,String pNombreFicheroTrain,Instances pData) {
 		int trainSize = (int) Math.round(pData.numInstances() * 0.66);
 		int testSize = pData.numInstances() - trainSize;
 		this.setTrain(new Instances(pData, 0, trainSize));
 		this.setTest(new Instances(pData, trainSize, testSize));
 		
-		// HACER!!!! Salvar las instancias del test en un fichero
+		//Guardamos los datos en un fichero
+		SaveData.guardarResultado(pNombreFicheroTrain, this.getTrain());
+		SaveData.guardarResultado(pNombreFicheroTest, this.getTest());
 	}
 	
 	private void setTrain(Instances pDatos) {
