@@ -9,6 +9,7 @@ public class BagOfWords {
 	//Atributos
 	private Instances data;
 	private StringToWordVector stw;
+	private final int wordsTKeep = 2000;
 	
 	//Constructora
 	public BagOfWords(Instances pData) {
@@ -32,15 +33,20 @@ public class BagOfWords {
 		this.getStw().setAttributeIndices("last");
 		this.getStw().setLowerCaseTokens(true);
 		this.getStw().setOutputWordCounts(false);
-		this.getStw().setWordsToKeep(2000);
-		
-		
+		this.getStw().setWordsToKeep(wordsTKeep);
+		//Antes de hacer nada, primero pregunta el classindex y luego swapea
+		//int posicionClassIndex = this.getData().classIndex();
 		try{
 			this.getStw().setInputFormat(this.getData());
 			dataBOW = Filter.useFilter(this.getData(), this.getStw());
 		}catch (Exception e) {
 			System.out.println("Ha ocurrido un error durante el filtrado, es posible que el fichero de datos no sea correcto o que los parámetros del filtro no sean correctos");
 		}
+		
+		//Ahora debemos saber donde está nuestro index y swapearlo
+		//int posicionNuevaIndex = dataBOW.classIndex();
+		
+		
 		SaveData.guardarResultado("testBOW.arff", dataBOW);
 		return dataBOW;
 	}
@@ -49,10 +55,11 @@ public class BagOfWords {
 		Instances dataBOW = null;
 		this.getStw().setIDFTransform(false);
 		this.getStw().setTFTransform(false);
+		//Decirle porque he puesto last
 		this.getStw().setAttributeIndices("last");
 		this.getStw().setLowerCaseTokens(true);
 		this.getStw().setOutputWordCounts(true);
-		this.getStw().setWordsToKeep(2000);
+		this.getStw().setWordsToKeep(wordsTKeep);
 		
 		
 		try{
@@ -75,7 +82,7 @@ public class BagOfWords {
 		this.getStw().setAttributeIndices("last");
 		this.getStw().setLowerCaseTokens(true);
 		this.getStw().setOutputWordCounts(true);
-		this.getStw().setWordsToKeep(2000);
+		this.getStw().setWordsToKeep(wordsTKeep);
 		
 		try{
 			this.getStw().setInputFormat(data);

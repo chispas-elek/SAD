@@ -36,12 +36,12 @@ public class DataMiningExample {
         //Por el momento será con el output en false
        
         Instances dataBOW = bow.matrizDispersionOWCFalse();
-        Instances dataBOWTF = bow.matrizDispersionTFIDF();
+        Instances dataTFIDF = bow.matrizDispersionTFIDF();
         
         //////////////////////////////////////////
         //FeatureSubSetSelection
         
-        FeatureSubSetSelection fss = new FeatureSubSetSelection();
+        SeleccionarAtributos fss = new SeleccionarAtributos();
         
         //Ahora vamos a elegir los datos más relevantes mediante dos tipos de algoritmos. 
         //Uno de ganancia de datos y otra basado en técnicas TF-IDF
@@ -50,9 +50,6 @@ public class DataMiningExample {
         
 		Instances dataInfoGain = fss.seleccionarAtributos("testDataInfogain.arff",dataBOW);
 		
-		//Algoritmo basado en TF-IDF
-		
-		Instances dataTFIDF = fss.seleccionarAtributos("testDataTFIDF.arff",dataBOWTF);
 
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,11 +74,11 @@ public class DataMiningExample {
 		
 		//Estimador usándo NaiveBayes
 		Naive naiveIG = new Naive();
-		naiveIG.estimarNaive(train, test);
-		naiveIG.estimarNaive(trainTFIDF, testTFIDF);
+		naiveIG.estimarNaive("ResultadoNaive.txt",train, test);
+		naiveIG.estimarNaive("ResultadoNaiveTFIDF.txt",trainTFIDF, testTFIDF);
 		//Estimador usándo árbol de decisión J48
 		J48Tree jTree = new J48Tree();
-		jTree.estimarJ48(train, test);
-		jTree.estimarJ48(trainTFIDF, testTFIDF);
+		jTree.estimarJ48("ResultadoJ48Tree.txt",train, test);
+		jTree.estimarJ48("ResultadoJ48TreeTFIDF.txt",trainTFIDF, testTFIDF);
     }
 }

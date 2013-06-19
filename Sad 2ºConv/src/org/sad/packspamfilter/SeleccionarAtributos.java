@@ -7,11 +7,11 @@ import weka.attributeSelection.Ranker;
 import weka.filters.supervised.attribute.AttributeSelection;
 
 
-public class FeatureSubSetSelection {
+public class SeleccionarAtributos {
 	
-	
+	private final double threshold = 0.0005;
 	//Constructora
-	public FeatureSubSetSelection()  {
+	public SeleccionarAtributos()  {
 		
 	}
 	
@@ -22,7 +22,7 @@ public class FeatureSubSetSelection {
 		AttributeSelection filter= new AttributeSelection();
 		InfoGainAttributeEval eval = new InfoGainAttributeEval();
 		Ranker search = new Ranker();
-		search.setThreshold(0.0005);
+		search.setThreshold(threshold);
 		search.setNumToSelect(-1);
 		filter.setEvaluator(eval);
 		filter.setSearch(search);

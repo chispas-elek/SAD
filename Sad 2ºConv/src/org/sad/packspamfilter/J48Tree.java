@@ -17,7 +17,7 @@ public class J48Tree {
 	}
 	
 	//metodos
-	public void estimarJ48(Instances pTrain, Instances pTest) {
+	public void estimarJ48(String pNombreFichero,Instances pTrain, Instances pTest) {
 		J48 estimador = new J48();
 		
 		try{
@@ -31,12 +31,15 @@ public class J48Tree {
 			
 			//Realizamos un barrido de parámetros y buscamos el mayor fmeasure
 			Evaluation evaluator = new Evaluation(pTrain);
-			for(int k=0;k<pTrain.numInstances();k++){
-				System.out.println("Iteracion : " + k + " de " + pTrain.numInstances());
-				//El factor de confianza para el podado
-				estimador.setConfidenceFactor((float) 0.11);
+			for(int k=0;k<2;k++){
 				//El número de instancias por hoja
-				estimador.setMinNumObj(6);
+				//USA UMPRUNED
+				if(estimador.getUnpruned()) {
+					estimador.setUnpruned(false);
+				}
+				System.out.println("El valor del Umpruned es "+estimador.getUnpruned());
+				//Cambiamos el MinNumObj
+				estimador.setMinNumObj(2);
 				evaluator.crossValidateModel(estimador, pTrain, 5, new Random(45));
 				double fMeasure = evaluator.fMeasure(1);
 				double precision=evaluator.precision(1); 
@@ -96,7 +99,7 @@ public class J48Tree {
 			System.out.println("Root relative squared error  " + rrse);
 				
 			//Escribir los resultados en un fichero.
-			SaveData.escribirResultadosEvaluador("ResultadoJ48Tree.txt", pTest, predictions);
+			SaveData.escribirResultadosEvaluador(pNombreFichero, pTest, predictions);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

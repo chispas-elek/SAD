@@ -6,6 +6,7 @@ public class SeleccionDatos {
 	
 	//atributos
 	private Instances test, train;
+	private final double porcentaje = 0.66;
 	
 	//Constructora
 	public SeleccionDatos() {
@@ -16,7 +17,7 @@ public class SeleccionDatos {
 	
 	//metodos
 	public void seleccionar(String pNombreFicheroTest,String pNombreFicheroTrain,Instances pData) {
-		int trainSize = (int) Math.round(pData.numInstances() * 0.66);
+		int trainSize = (int) Math.round(pData.numInstances() * this.getPorcentaje());
 		int testSize = pData.numInstances() - trainSize;
 		this.setTrain(new Instances(pData, 0, trainSize));
 		this.setTest(new Instances(pData, trainSize, testSize));
@@ -40,6 +41,10 @@ public class SeleccionDatos {
 	
 	public Instances getTest() {
 		return this.test;
+	}
+	
+	public double getPorcentaje(){
+		return this.porcentaje;
 	}
 
 	

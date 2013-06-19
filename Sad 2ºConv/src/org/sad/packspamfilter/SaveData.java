@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import weka.core.Instances;
+import weka.core.converters.ArffSaver;
 
 public class SaveData {
 
@@ -72,6 +73,18 @@ public class SaveData {
 			}
 		}else {
 			System.out.println("El fichero de Resultados ya existe. Por favor elimina primero dicho fichero");
+		}
+	}
+	
+	//El método que voy a programar es EXPERIMENTAL es una bomba de relojeria y de momento no será usado
+	public static void guardarResultadoConWeka(String pNombreFichero, Instances pData) {
+		ArffSaver save = new ArffSaver();
+		save.setInstances(pData);
+		try{
+			save.setFile(new File(pNombreFichero));
+			save.writeBatch();
+		}catch(IOException e){
+			e.printStackTrace();
 		}
 	}
 }

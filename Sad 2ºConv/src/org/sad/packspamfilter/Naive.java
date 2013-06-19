@@ -12,56 +12,23 @@ public class Naive {
 	public Naive() {
 		
 	}
-	public void estimarNaive(Instances pTrain, Instances pTest) {
+	public void estimarNaive(String pNombreFichero,Instances pTrain, Instances pTest) {
 			NaiveBayes estimador = new NaiveBayes();
 			try {
-				double max=0;
-				int posMax = 0;
-				double measure=0;
-				double pre=0;
-				double rec=0;
-				double ar=0;
-				double acc=0;
-				
-				//Seleccionamos el último atributo que corresponde al clasify
-				//pTrain.setClassIndex(pTrain.numAttributes());
 				
 				Evaluation evaluator = new Evaluation(pTrain);
-				for(int k=0;k<pTrain.numInstances();k++){
-					System.out.println("Iteracion : " + k + " de " + pTrain.numInstances());
-					evaluator.crossValidateModel(estimador, pTrain, 5, new Random(45));
-					double fMeasure=evaluator.fMeasure(1); 
-					double precision=evaluator.precision(1); 
-					double recall=evaluator.recall(1);
-					double area=evaluator.areaUnderROC(1);
-					double accuracy=evaluator.pctCorrect();
-	                       
-	                if (fMeasure>max) {
-						max=fMeasure;
-						posMax=k;
-						measure=fMeasure;
-						pre=precision;
-						rec=recall;
-						ar=area;
-						acc=accuracy;
-	                }
-				} 
-				System.out.println("Posicion del maximo" + posMax);
-				System.out.println("Valor de F-measure maximo:" + measure);
-				System.out.println("Valor de precision maximo:" + pre);
-				System.out.println("Valor de recall maximo:" +rec);
-				System.out.println("Valor de area maximo:" +ar);
-				System.out.println("valor del accuracy maximo"+acc);
+				evaluator.crossValidateModel(estimador, pTrain, 5, new Random(45));
+				System.out.println("Valor de F-measure maximo:" + evaluator.fMeasure(1));
+				System.out.println("Valor de precision maximo:" + evaluator.precision(1));
+				System.out.println("Valor de recall maximo:" +evaluator.recall(1));
+				System.out.println("Valor de area maximo:" +evaluator.areaUnderROC(1));
+				System.out.println("valor del accuracy maximo"+evaluator.pctCorrect());
 				
 				
 				//Una vez imprimido el fmeasure máximo vamos a entrenar el modelo y guardar los resultados
 				
 				estimador.buildClassifier(pTrain);
-				//Aleatorizamos el fichero de test
-				Random rnd = new Random();
-				int num = rnd.nextInt(50)+1;
-				pTest.randomize(new Random(num));
-					
+				//Evaluamos el modelo
 				evaluator.evaluateModel(estimador, pTest);
 					
 				double predictions[] = new double[pTest.numInstances()];
@@ -71,7 +38,7 @@ public class Naive {
 					
 				//Resultado
 					
-				acc=evaluator.pctCorrect();
+				double acc=evaluator.pctCorrect();
 				double inc=evaluator.pctIncorrect();
 				double kappa=evaluator.kappa();
 				double mae=evaluator.meanAbsoluteError();    
@@ -90,7 +57,7 @@ public class Naive {
 					
 					
 				//Escribiremos en un fichero el resultado final de la matriz de predictions.
-				SaveData.escribirResultadosEvaluador("ResultadoNaive.txt", pTest, predictions);
+				SaveData.escribirResultadosEvaluador(pNombreFichero, pTest, predictions);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
