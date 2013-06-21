@@ -1,5 +1,7 @@
 package org.sad.packspamfilter;
 
+import java.util.Random;
+
 import weka.core.Instances;
 
 public class SeleccionDatos {
@@ -17,6 +19,10 @@ public class SeleccionDatos {
 	
 	//metodos
 	public void seleccionar(String pNombreFicheroTrain,String pNombreFicheroTest,Instances pData) {
+		//Aleatorizamos los datos
+		pData.randomize(new Random(45));
+		
+		//Generamos los ficheros, train y test
 		int trainSize = (int) Math.round(pData.numInstances() * this.getPorcentaje());
 		int testSize = pData.numInstances() - trainSize;
 		this.setTrain(new Instances(pData, 0, trainSize));

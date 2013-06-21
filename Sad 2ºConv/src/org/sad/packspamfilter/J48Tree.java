@@ -10,7 +10,7 @@ import weka.core.Instances;
 public class J48Tree {
 
 	//atributos
-	
+	private final int vueltas = 200;
 	//constructora
 	public J48Tree() {
 		
@@ -26,79 +26,84 @@ public class J48Tree {
 			double measure=0;
 			double pre=0;
 			double rec=0;
-			double ar=0;
 			double acc=0;
-			
+			double inc=0;
+			int minnumobjopt=0;
+			boolean uopt=false;
 			//Realizamos un barrido de parámetros y buscamos el mayor fmeasure
 			Evaluation evaluator = new Evaluation(pTrain);
+			//Barremospara umpruned en true o false
 			for(int k=0;k<2;k++){
-				//El número de instancias por hoja
-				//USA UMPRUNED
 				if(estimador.getUnpruned()) {
 					estimador.setUnpruned(false);
 				}else {
 					estimador.setUnpruned(true);
 				}
 				System.out.println("El valor del Umpruned es "+estimador.getUnpruned());
-				//Cambiamos el MinNumObj
-				estimador.setMinNumObj(2);
-				evaluator.crossValidateModel(estimador, pTrain, 5, new Random(45));
-				double fMeasure = evaluator.fMeasure(1);
-				double precision=evaluator.precision(1); 
-				double recall=evaluator.recall(1);
-				double area=evaluator.areaUnderROC(1);
-				double accuracy=evaluator.pctCorrect();
-				if(fMeasure > max) {
-					max = fMeasure;
-					posMax=k;
-					measure=fMeasure;
-					pre=precision;
-					rec=recall;
-					ar=area;
-					acc=accuracy;
+				//Cambiamos el MinNumObj tanto como creamos que debemos configurar en el parámetro vueltas
+				for(int b=0;b<vueltas;b++) {
+					estimador.setMinNumObj(b);
+					evaluator.crossValidateModel(estimador, pTrain, 5, new Random(45));
+					double fMeasure = evaluator.fMeasure(1);
+					double precision=evaluator.precision(1); 
+					double recall=evaluator.recall(1);
+					double accuracy=evaluator.pctCorrect();
+					int minNumObj = estimador.getMinNumObj();
+					boolean umpruned = estimador.getUnpruned();
+					System.out.println("Valor del fMeasure "+fMeasure);
+					if(fMeasure > max) {
+						uopt = umpruned; 
+						minnumobjopt= minNumObj;
+						max = fMeasure;
+						posMax=b;
+						measure=fMeasure;
+						pre=precision;
+						rec=recall;
+						acc=accuracy;
+					}
 				}
 			}	
-			//Necesito saber que datos necesito imprimir por pantalla
+			//Imprimimos los datos referentes a la combinación que mejor fMeasure me da
 			
 			System.out.println("Posicion del maximo" + posMax);
 			System.out.println("Valor de F-measure maximo:" + measure);
 			System.out.println("Valor de precision maximo:" + pre);
 			System.out.println("Valor de recall maximo:" +rec);
-			System.out.println("Valor de area maximo:" +ar);
 			System.out.println("valor del accuracy maximo"+acc);
+			System.out.println("Valor del umpruned óptimo "+uopt);
+			System.out.println("Valor del minNumObject óptimo "+minnumobjopt);
 				
 			//Una vez hecho todo, entreno el estimador con los datos de train que tengo
-			estimador.buildClassifier(pTrain);
-			//Aleatorizamos los datos del test
-			Random rnd = new Random();
-			int num = rnd.nextInt(50)+1;
-			pTest.randomize(new Random(num));
+			//setear parametros óptimos
+			J48 estimadorOptimo = new J48();
+			estimadorOptimo.setUnpruned(uopt);
+			estimadorOptimo.setMinNumObj(minnumobjopt);
+			//Entrenamos el modelo con los atributos óptimos
+			estimadorOptimo.buildClassifier(pTrain);
 				
 			//creamos los resultados
-			evaluator.evaluateModel(estimador, pTest);
+			evaluator.evaluateModel(estimadorOptimo, pTest);
 			double predictions[] = new double[pTest.numInstances()];
 				
 			for(int i = 0;i < pTest.numInstances();i++){
-				predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction((Classifier)estimador, pTest.instance(i));
+				predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction((Classifier)estimadorOptimo, pTest.instance(i));
 			}
 				
 			//Resultados
-				
+			measure = evaluator.fMeasure(1);
+			pre=evaluator.precision(1); 
+			rec=evaluator.recall(1);
 			acc=evaluator.pctCorrect();
-			double inc=evaluator.pctIncorrect();
-			double kappa=evaluator.kappa();
-			double mae=evaluator.meanAbsoluteError();    
-			double rmse=evaluator.rootMeanSquaredError();
-			double rae=evaluator.relativeAbsoluteError();
-			double rrse=evaluator.rootRelativeSquaredError();
-		
+			inc=evaluator.pctIncorrect();
+			
+			//Imprimimos por pantalla los resultados que nos ha dado el evaluador después de entrenar el modelo
+			System.out.println("Valor de F-measure maximo:" + measure);
+			System.out.println("Valor de precision maximo:" + pre);
+			System.out.println("Valor de recall maximo:" +rec);
+			System.out.println("valor del accuracy maximo"+acc);
 			System.out.println("Correctly Classified Instances  " + acc);
 			System.out.println("Incorrectly Classified Instances  " + inc);
-			System.out.println("Kappa statistic  " + kappa);
-			System.out.println("Mean absolute error  " + mae);
-			System.out.println("Root mean squared error  " + rmse);
-			System.out.println("Relative absolute error  " + rae);
-			System.out.println("Root relative squared error  " + rrse);
+
 				
 			//Escribir los resultados en un fichero.
 			SaveData.escribirResultadosEvaluador(pNombreFichero, pTest, predictions);

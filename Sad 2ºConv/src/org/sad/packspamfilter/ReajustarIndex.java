@@ -27,6 +27,8 @@ public class ReajustarIndex {
 	
 	//La idea de ésta clase es hacer que clasify ocupe la posición 0 para poder poner el class index en ese valor
 	public Instances redIndexClasify() {
+		//Revisar Reoder
+		//
 		Instances newData = this.getData();
 		Attribute index = newData.attribute("clasify");
 		newData.swap(0,index.index());

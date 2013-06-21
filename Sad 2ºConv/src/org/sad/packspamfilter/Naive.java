@@ -16,15 +16,15 @@ public class Naive {
 	public void estimarNaive(String pNombreFichero,Instances pTrain, Instances pTest) {
 			NaiveBayes estimador = new NaiveBayes();
 			try {
-				Attribute index = pTest.attribute("clasify");
-				pTest.setClassIndex(index.index());
+				Attribute atrib = pTrain.attribute("clasify");
+				pTrain.setClassIndex(atrib.index());
 				
+				//Estimamos el mejor resultado
 				Evaluation evaluator = new Evaluation(pTrain);
 				evaluator.crossValidateModel(estimador, pTrain, 5, new Random(45));
 				System.out.println("Valor de F-measure maximo:" + evaluator.fMeasure(1));
 				System.out.println("Valor de precision maximo:" + evaluator.precision(1));
 				System.out.println("Valor de recall maximo:" +evaluator.recall(1));
-				System.out.println("Valor de area maximo:" +evaluator.areaUnderROC(1));
 				System.out.println("valor del accuracy maximo"+evaluator.pctCorrect());
 				
 				
@@ -40,22 +40,13 @@ public class Naive {
 				}
 					
 				//Resultado
-					
-				double acc=evaluator.pctCorrect();
-				double inc=evaluator.pctIncorrect();
-				double kappa=evaluator.kappa();
-				double mae=evaluator.meanAbsoluteError();    
-				double rmse=evaluator.rootMeanSquaredError();
-				double rae=evaluator.relativeAbsoluteError();
-				double rrse=evaluator.rootRelativeSquaredError();
 		
-				System.out.println("Correctly Classified Instances  " + acc);
-				System.out.println("Incorrectly Classified Instances  " + inc);
-				System.out.println("Kappa statistic  " + kappa);
-				System.out.println("Mean absolute error  " + mae);
-				System.out.println("Root mean squared error  " + rmse);
-				System.out.println("Relative absolute error  " + rae);
-				System.out.println("Root relative squared error  " + rrse);
+				System.out.println("Valor de F-measure maximo:" + evaluator.fMeasure(1));
+				System.out.println("Valor de precision maximo:" + evaluator.precision(1));
+				System.out.println("Valor de recall maximo:" +evaluator.recall(1));
+				System.out.println("valor del accuracy maximo"+evaluator.pctCorrect());
+				System.out.println("Incorrectly Classified Instances  " +evaluator.pctIncorrect());
+
 					
 					
 					
