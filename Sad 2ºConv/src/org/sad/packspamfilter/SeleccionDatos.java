@@ -16,15 +16,17 @@ public class SeleccionDatos {
 	
 	
 	//metodos
-	public void seleccionar(String pNombreFicheroTest,String pNombreFicheroTrain,Instances pData) {
+	public void seleccionar(String pNombreFicheroTrain,String pNombreFicheroTest,Instances pData) {
 		int trainSize = (int) Math.round(pData.numInstances() * this.getPorcentaje());
 		int testSize = pData.numInstances() - trainSize;
 		this.setTrain(new Instances(pData, 0, trainSize));
 		this.setTest(new Instances(pData, trainSize, testSize));
 		
 		//Guardamos los datos en un fichero
-		SaveData.guardarResultado(pNombreFicheroTrain, this.getTrain());
-		SaveData.guardarResultado(pNombreFicheroTest, this.getTest());
+		//SaveData.guardarResultado(pNombreFicheroTrain, this.getTrain());
+		//SaveData.guardarResultado(pNombreFicheroTest, this.getTest());
+		SaveData.guardarResultadoConWeka(pNombreFicheroTrain, this.getTrain());
+		SaveData.guardarResultadoConWeka(pNombreFicheroTest, this.getTest());
 	}
 	
 	private void setTrain(Instances pDatos) {

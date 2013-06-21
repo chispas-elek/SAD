@@ -48,7 +48,7 @@ public class DataMiningExample {
         
         //Algoritmo basado en ganancia de datos
         
-		Instances dataInfoGain = fss.seleccionarAtributos("testDataInfogain.arff",dataBOW);
+		Instances dataInfoGain = fss.seleccionarAtributos("instancesDataInfoGain.arff",dataBOW);
 		
 
 		

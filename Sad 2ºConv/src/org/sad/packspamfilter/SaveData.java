@@ -18,6 +18,7 @@ public class SaveData {
 	}
 	
 	//Metodos
+	//Antiguo método para guardar resultados
 	public static void guardarResultado(String pNombreFichero, Instances pData) {
 		File fichero = new File(pNombreFichero);
 		if(!fichero.exists()) {
@@ -76,13 +77,13 @@ public class SaveData {
 		}
 	}
 	
-	//El método que voy a programar es EXPERIMENTAL es una bomba de relojeria y de momento no será usado
 	public static void guardarResultadoConWeka(String pNombreFichero, Instances pData) {
 		ArffSaver save = new ArffSaver();
 		save.setInstances(pData);
 		try{
 			save.setFile(new File(pNombreFichero));
 			save.writeBatch();
+			System.out.println("El fichero "+pNombreFichero+" ha sido creado satisfactoriamente");
 		}catch(IOException e){
 			e.printStackTrace();
 		}

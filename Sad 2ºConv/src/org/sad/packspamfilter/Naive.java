@@ -5,6 +5,7 @@ import java.util.Random;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.core.Attribute;
 import weka.core.Instances;
 
 public class Naive {
@@ -15,6 +16,8 @@ public class Naive {
 	public void estimarNaive(String pNombreFichero,Instances pTrain, Instances pTest) {
 			NaiveBayes estimador = new NaiveBayes();
 			try {
+				Attribute index = pTest.attribute("clasify");
+				pTest.setClassIndex(index.index());
 				
 				Evaluation evaluator = new Evaluation(pTrain);
 				evaluator.crossValidateModel(estimador, pTrain, 5, new Random(45));

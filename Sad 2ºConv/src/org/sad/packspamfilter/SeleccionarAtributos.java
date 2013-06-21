@@ -32,8 +32,14 @@ public class SeleccionarAtributos {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		//reajusto los datos
+		//ReajustarIndex reajuste = new ReajustarIndex(dataInfoGain);
+		//Instances dataInfoGainReajustado = reajuste.redIndexClasify();
+		
 		//Guardo los ficheros resultantes
-		SaveData.guardarResultado(pNombreFichero, dataInfoGain);
+		//SaveData.guardarResultado(pNombreFichero, dataInfoGain);
+		SaveData.guardarResultadoConWeka(pNombreFichero, dataInfoGain);
 		return dataInfoGain;
 	}
 }

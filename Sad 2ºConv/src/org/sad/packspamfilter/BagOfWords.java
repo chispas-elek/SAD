@@ -1,5 +1,6 @@
 package org.sad.packspamfilter;
 
+//import weka.core.Attribute;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
@@ -34,8 +35,6 @@ public class BagOfWords {
 		this.getStw().setLowerCaseTokens(true);
 		this.getStw().setOutputWordCounts(false);
 		this.getStw().setWordsToKeep(wordsTKeep);
-		//Antes de hacer nada, primero pregunta el classindex y luego swapea
-		//int posicionClassIndex = this.getData().classIndex();
 		try{
 			this.getStw().setInputFormat(this.getData());
 			dataBOW = Filter.useFilter(this.getData(), this.getStw());
@@ -43,12 +42,13 @@ public class BagOfWords {
 			System.out.println("Ha ocurrido un error durante el filtrado, es posible que el fichero de datos no sea correcto o que los parámetros del filtro no sean correctos");
 		}
 		
-		//Ahora debemos saber donde está nuestro index y swapearlo
-		//int posicionNuevaIndex = dataBOW.classIndex();
+		//reindexamos
+		ReajustarIndex reajuste = new ReajustarIndex(dataBOW);
+		Instances dataBOWReajustado = reajuste.redIndexClasify();
 		
-		
-		SaveData.guardarResultado("testBOW.arff", dataBOW);
-		return dataBOW;
+		//SaveData.guardarResultado("testBOW.arff", dataBOWReajustado);
+		SaveData.guardarResultadoConWeka("testBOW.arff", dataBOWReajustado);
+		return dataBOWReajustado;
 	}
 	
 	public Instances matrizDispersionOWCTrue() {
@@ -90,8 +90,13 @@ public class BagOfWords {
 		}catch (Exception e) {
 			System.out.println("Ha ocurrido un error durante el filtrado, es posible que el fichero de datos no sea correcto o que los parámetros del filtro no sean correctos");
 		}
-		SaveData.guardarResultado("testBOWTFIDF.arff", dataBOWTF);
-		return dataBOWTF;
+		
+		ReajustarIndex reajuste = new ReajustarIndex(dataBOWTF);
+		Instances dataBOWTFReajustado = reajuste.redIndexClasify();
+		
+		//SaveData.guardarResultado("testBOWTFIDF.arff", dataBOWTFReajustado);
+		SaveData.guardarResultadoConWeka("testBOWTFIDF.arff", dataBOWTFReajustado);
+		return dataBOWTFReajustado;
 		//Falta la parte de escritura del fichero
 	}
 }

@@ -36,6 +36,8 @@ public class J48Tree {
 				//USA UMPRUNED
 				if(estimador.getUnpruned()) {
 					estimador.setUnpruned(false);
+				}else {
+					estimador.setUnpruned(true);
 				}
 				System.out.println("El valor del Umpruned es "+estimador.getUnpruned());
 				//Cambiamos el MinNumObj
