@@ -10,7 +10,7 @@ import weka.core.Instances;
 public class J48Tree {
 
 	//atributos
-	private final int vueltas = 200;
+	private final int vueltas = 10;
 	//constructora
 	public J48Tree() {
 		

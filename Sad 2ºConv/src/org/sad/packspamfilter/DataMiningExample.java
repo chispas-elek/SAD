@@ -48,7 +48,7 @@ public class DataMiningExample {
         
         //Algoritmo basado en ganancia de datos
         
-		Instances dataInfoGain = fss.seleccionarAtributos("instancesDataInfoGain.arff",dataBOW);
+		Instances dataInfoGain = fss.seleccionarAtributos("smsInstancesBOW_FSS_InfoGain.arff",dataBOW);
 		
 
 		
@@ -58,14 +58,14 @@ public class DataMiningExample {
 		//Partición train y test para InfoGain
 		
 		SeleccionDatos selecDatos = new SeleccionDatos();
-		selecDatos.seleccionar("smsInfoGainTrain.arff","smsInfoGainTest.arff",dataInfoGain);
+		selecDatos.seleccionar("sms_InfoGain_train.arff","sms_InfoGain_test.arff",dataInfoGain);
 		Instances train = selecDatos.getTrain();
 		Instances test = selecDatos.getTest();
 		
 		//Partición train y test para TF-IDF
 		
 		SeleccionDatos selecDatosTFIDF = new SeleccionDatos();
-		selecDatosTFIDF.seleccionar("smsTFIDFTrain.arff","smsTFIDFTest.arff",dataTFIDF);
+		selecDatosTFIDF.seleccionar("sms_TFIDF_train.arff","sms_TFIDF_test.arff",dataTFIDF);
 		Instances trainTFIDF = selecDatosTFIDF.getTrain();
 		Instances testTFIDF = selecDatosTFIDF.getTest();
 		
@@ -74,11 +74,11 @@ public class DataMiningExample {
 		
 		//Estimador usándo NaiveBayes
 		Naive naiveIG = new Naive();
-		naiveIG.estimarNaive("ResultadoNaive.txt",train, test);
-		naiveIG.estimarNaive("ResultadoNaiveTFIDF.txt",trainTFIDF, testTFIDF);
+		naiveIG.estimarNaive("InfoGain_test_BaselinePredictions.txt",train, test);
+		naiveIG.estimarNaive("TFIDF_test_BaselinePredictions.txt",trainTFIDF, testTFIDF);
 		//Estimador usándo árbol de decisión J48
 		J48Tree jTree = new J48Tree();
-		jTree.estimarJ48("ResultadoJ48Tree.txt",train, test);
-		jTree.estimarJ48("ResultadoJ48TreeTFIDF.txt",trainTFIDF, testTFIDF);
+		jTree.estimarJ48("InfoGain_test_AlgorithmPredictions.txt",train, test);
+		jTree.estimarJ48("TFIDF_test_AlgorithmPredictions.txt",trainTFIDF, testTFIDF);
     }
 }

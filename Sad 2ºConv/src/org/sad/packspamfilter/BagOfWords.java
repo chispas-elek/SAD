@@ -43,12 +43,12 @@ public class BagOfWords {
 		}
 		
 		//reindexamos
-		ReajustarIndex reajuste = new ReajustarIndex(dataBOW);
-		Instances dataBOWReajustado = reajuste.redIndexClasify();
+		//ReajustarIndex reajuste = new ReajustarIndex(dataBOW);
+		//Instances dataBOWReajustado = reajuste.redIndexClasify();
 		
 		//SaveData.guardarResultado("testBOW.arff", dataBOWReajustado);
-		SaveData.guardarResultadoConWeka("testBOW.arff", dataBOWReajustado);
-		return dataBOWReajustado;
+		SaveData.guardarResultadoConWeka("smsInstancesBOW.arff", dataBOW);
+		return dataBOW;
 	}
 	
 	public Instances matrizDispersionOWCTrue() {
@@ -95,7 +95,7 @@ public class BagOfWords {
 		Instances dataBOWTFReajustado = reajuste.redIndexClasify();
 		
 		//SaveData.guardarResultado("testBOWTFIDF.arff", dataBOWTFReajustado);
-		SaveData.guardarResultadoConWeka("testBOWTFIDF.arff", dataBOWTFReajustado);
+		SaveData.guardarResultadoConWeka("smsInstancesBOW_FSS_TFIDF.arff", dataBOWTFReajustado);
 		return dataBOWTFReajustado;
 		//Falta la parte de escritura del fichero
 	}
